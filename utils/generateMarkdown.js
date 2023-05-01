@@ -1,38 +1,8 @@
-// TODO: Create a function that returns a license badge based on which license is passed in
-// If there is no license, return an empty string
-function renderLicenseBadge(license) {
-    if (answers.license === 'MIT') {
-      return '[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)';
-    } else if (answers.license === 'Apache-2.0') {
-      return '[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)';
-    } else if (answers.license === 'GPL-3.0') {
-      return '[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)';
-    } else if (answers.license === 'BSD-3-Clause') {
-      return '[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)';
-    } else {
-      return '';
-    }
-  }
-  
-  // Create a function that returns the license link
-  // If there is no license, return an empty string
-  function renderLicenseLink(license) {
-    if (answers.license === 'MIT') {
-      return 'https://opensource.org/licenses/MIT';
-    } else if (answers.license === 'Apache-2.0') {
-      return 'https://opensource.org/licenses/Apache-2.0';
-    } else if (answers.license === 'GPL-3.0') {
-      return 'https://www.gnu.org/licenses/gpl-3.0';
-    } else if (answers.license === 'BSD-3-Clause') {
-      return 'https://opensource.org/licenses/BSD-3-Clause';
-    } else {
-      return '';
-    }
-  }
+
   
   
   const inquirer = require('inquirer');
-  
+  const fs = require('fs');
   function generateMarkdown() {
     inquirer
       .prompt([
@@ -74,38 +44,39 @@ function renderLicenseBadge(license) {
         }
       ])
       .then(answers => {
-        let readme = `# ${answers.projectName}\n\n`;
-        readme += `${answers.description}\n\n`;
-        readme += '## Installation\n\n';
-        readme += `${answers.installation}\n\n`;
-        readme += '## Usage\n\n';
-        readme += `${answers.usage}\n\n`;
-        readme += '## Contributing\n\n';
-        readme += `${answers.contributing}\n\n`;
-        readme += '## Credits\n\n';
-        readme += `${answers.credits}\n\n`;
-        readme += '## License\n\n';
+        let readme = `# ${answers.projectName} <br>`;
+        readme += `## ${answers.description}<br> `;
+        readme += '## Installation ';
+        readme += `<br>${answers.installation}<br> `;
+        readme += '## Usage ';
+        readme += `<br>${answers.usage}<br> `;
+        readme += '## Contributing ';
+        readme += `<br>${answers.contributing}<br> `;
+        readme += '## Credits ';
+        readme += `<br>${answers.credits}<br>`;
+        readme += '### <br>';
         if (answers.license !== 'None') {
-          readme += `This project is released under the ${answers.license} license.\n`;
+          readme += `This project is released under the ${answers.license} license.`;
             if (answers.license === 'MIT') {
-              readme += `https://opensource.org/licenses/MIT`;
+              readme += `https://opensource.org/licenses/MIT, https://img.shields.io/badge/License-MIT-yellow.svg`;
             } else if (answers.license === 'Apache-2.0') {
-              readme += `https://opensource.org/licenses/Apache-2.0`;
+              readme += `https://opensource.org/licenses/Apache-2.0, https://img.shields.io/badge/License-Apache%202.0-blue.svg`;
             } else if (answers.license === 'GPL-3.0') {
-              readme += `https://www.gnu.org/licenses/gpl-3.0`;
+              readme += `https://www.gnu.org/licenses/gpl-3.0, https://img.shields.io/badge/License-GPLv3-blue.svg`;
             } else if (answers.license === 'BSD-3-Clause') {
-              readme += `https://opensource.org/licenses/BSD-3-Clause`;
+              readme += `https://opensource.org/licenses/BSD-3-Clause, https://img.shields.io/badge/License-BSD%203--Clause-blue.svg`;
             } else {
               readme += '';
             }
+            fs.writeFile('README_sample.md', JSON.stringify(readme, null, '\t'), (err) =>
+            err ? console.log(err) : console.log('Success!')
+          );
+        
+   }
+  }
+  )
+};
           
-        // } else {
-        //   readme += 'This project is not licensed.\n';
-        // }
-        console.log(readme);
-          }
-  });
-    }
   
   module.exports = generateMarkdown;
   
